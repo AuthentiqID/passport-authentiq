@@ -31,22 +31,25 @@ configure a callback URL which matches the route in your application.
 The AuthentiqID authentication strategy authenticates users that use the AuthentiqID mobile application.
 The client ID and secret obtained when creating an application are supplied as options when creating the strategy.
 The strategy also requires a `verify` callback, which receives the access token.
-The `verify` callback must call `cb` providing a user to complete authentication.
+The `verify` callback must call `done` providing a user to complete authentication.
 
 ```js
 var AuthentiqIDStrategy = require('passport-authentiqid').Strategy;
 
-passport.use(new AuthentiqIDStrategy({
-    clientID: AUTHENTIQ_CLIENT_ID,
-    clientSecret: AUTHENTIQ_CLIENT_SECRET,
-    callbackURL: "http://127.0.0.1:3000/auth/authentiq/callback"
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ authentiqId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
-  }
-));
+
+passport.use(new AuthentiqStrategy({
+                         clientID: 'Authentiq Client ID',
+                         clientSecret: 'Authentiq Client Secret',
+                         callbackURL: 'https://www.example.net/auth/authentiq/callback',
+                         state: true,
+                         scope: "aq:name aq:location address email~r phone aq:push"
+                     },
+                     function (accessToken, refreshToken, profile, done) {
+                          User.findOrCreate({ authentiqId: profile.id }, function (err, user) {
+                             return done(err, user);
+                          });
+                     }
+              ));
 ```
 
 #### Authenticate Requests
@@ -59,15 +62,21 @@ application:
 
 ```js
 app.get('/auth/authentiq',
-  passport.authenticate('authentiq'));
+ passport.authenticate('authentiq'));
 
-app.get('/auth/authentiq/callback', 
-  passport.authenticate('authentiq', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  });
+app.get('/auth/authentiq/callback',
+    passport.authenticate('authentiq', { failureRedirect: '/login' }),
+    function(req, res) {
+        if (!req.user) {
+            throw new Error('user null');
+        }
+        // Successful authentication, redirect home.
+        res.redirect("/");
+    }
+);
 ```
+
+
 
 ## Examples 
 
