@@ -12,26 +12,37 @@ unobtrusively integrated into any application or framework that supports
 ## Install
 
 ```bash
-$ npm install passport-authentiqid
+$ npm install passport-authentiq
 ```
 
 ## Usage
 
 #### Create an Application
 
-Before using `passport-authentiqid`, you must register an application with Authentiq.
-If you have not already done so, a new application can be created at
-[developer applications](https://dashboard.authentiq.com/).
+Before using `passport-authentiq`, you must register an application with Authentiq.
+If you have not already done so, a new application can be created at the 
+[Authentiq Dashboard](https://dashboard.authentiq.com/).
 Your application will be issued a client ID and client
 secret, which need to be provided to the strategy.  You will also need to
 configure a callback URL which matches the route in your application.
 
 #### Configure Strategy
 
-The AuthentiqID authentication strategy authenticates users that use the AuthentiqID mobile application.
-The client ID and secret obtained when creating an application are supplied as options when creating the strategy.
+The AuthentiqID authentication strategy authenticates users that use the AuthentiqID mobile application by using
+OpenID Connect, which is an identity layer on top of the OAuth 2.0 protocol.
+
+The _clientID_ and _clientSecret_ are obtained when creating an application on the [Authentiq Dashboard](https://dashboard.authentiq.com) 
+and need to be supplied as parameters when creating the strategy.
+
+The _callbackURL_ is the URL to which Authentiq will redirect the user after granting authorization.
+
+The _scope_ parameter is an array of permission scopes to request.  valid scopes include:
+_'aq:name', 'email', 'phone', 'address', 'aq:location', 'aq:push' or none_.
+
 The strategy also requires a `verify` callback, which receives the access token.
 The `verify` callback must call `done` providing a user to complete authentication.
+
+
 
 ```js
 var AuthentiqIDStrategy = require('passport-authentiqid').Strategy;
@@ -41,8 +52,7 @@ passport.use(new AuthentiqStrategy({
                          clientID: 'Authentiq Client ID',
                          clientSecret: 'Authentiq Client Secret',
                          callbackURL: 'https://www.example.net/auth/authentiq/callback',
-                         state: true,
-                         scope: "aq:name aq:location address email~r phone aq:push"
+                         scope: ['aq:name', 'email:rs', 'phone:r', 'aq:push']
                      },
                      function (accessToken, refreshToken, profile, done) {
                           User.findOrCreate({ authentiqId: profile.id }, function (err, user) {
@@ -54,7 +64,7 @@ passport.use(new AuthentiqStrategy({
 
 #### Authenticate Requests
 
-Use `passport.authenticate()`, specifying the `'authentiqid'` strategy, to
+Use `passport.authenticate()`, specifying the `'authentiq'` strategy, to
 authenticate requests.
 
 For example, as route middleware in an [Express](http://expressjs.com/)
@@ -75,11 +85,6 @@ app.get('/auth/authentiq/callback',
     }
 );
 ```
-
-
-
-## Examples 
-
 
 ## Contributing
 
