@@ -40,9 +40,11 @@
     "chai": "^3.x.x",
     "chai-passport-strategy": "1.x.x",
     "should": "^7.1.1",
-    "assert": "^1.4.1"
+    "assert": "^1.4.1",
+    "make-node": "0.3.x",
+    "mocha": "^3.x.x"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "node_modules/.bin/mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js"
   }
 }
