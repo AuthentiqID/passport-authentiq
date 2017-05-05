@@ -40,7 +40,7 @@ The _scope_ parameter is an array of permission scopes to request.  valid scopes
 _'aq:name', 'email', 'phone', 'address', 'aq:location', 'aq:push' or none_.
 
 The strategy also requires a `verify` callback, which receives the access token.
-The `verify` callback must call `done` providing a user to complete authentication.
+The `verify` callback must call `verified` providing a user to complete authentication.
 
 
 
@@ -54,13 +54,30 @@ passport.use(new AuthentiqStrategy({
                          callbackURL: 'https://www.example.net/auth/authentiq/callback',
                          scope: ['aq:name', 'email:rs', 'phone:r', 'aq:push']
                      },
-                     function (accessToken, refreshToken, profile, done) {
+                     function (iss, sub, profile, verified) {
                           User.findOrCreate({ authentiqId: profile.id }, function (err, user) {
-                             return done(err, user);
+                             return verified(err, user);
                           });
                      }
               ));
 ```
+
+#### Callback parameter
+
+In the above example, additional parameters can be declared in the _verified_ callback
+
+Specifically one can use the following, depending on their needs
+ 
+    function (iss, sub, profile, jwtClaims, accessToken, refreshToken, params, verified)
+    
+    function (iss, sub, profile, accessToken, refreshToken, params, verified)
+
+    function (iss, sub, profile, accessToken, refreshToken, verified)
+    
+    function(iss, sub, profile, verified)
+    
+    function(iss, sub, verified)
+
 
 #### Authenticate Requests
 
