@@ -31,10 +31,9 @@
   ],
   "main": "./lib",
   "dependencies": {
-    "jsonwebtoken": "^7.4.0",
-    "passport-oauth2": "1.x.x",
-    "xtend": "^4.0.1",
-    "util": "^0.10.3"
+    "passport-openidconnect": "0.0.2",
+    "util": "^0.10.3",
+    "xtend": "^4.0.1"
   },
   "devDependencies": {
     "make-node": "0.3.x",
