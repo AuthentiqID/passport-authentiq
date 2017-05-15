@@ -8,7 +8,7 @@ describe('constructor with bad params', function () {
         (function () {
             new AuthentiqStrategy(
                 {},
-                function (accessToken, idToken, profile, done) {
+                function(iss, sub, profile, done) {
                 }
             );
         }).should.throw('You must provide the clientID configuration value to use passport-authentiq.');
@@ -18,7 +18,7 @@ describe('constructor with bad params', function () {
         (function () {
             new AuthentiqStrategy(
                 {clientID: 'bar'},
-                function (accessToken, idToken, profile, done) {
+                function(iss, sub, profile, done) {
                 }
             );
         }).should.throw('You must provide the clientSecret configuration value to use passport-authentiq.');
@@ -27,21 +27,21 @@ describe('constructor with bad params', function () {
     it('should fail if no callbackURL is provided as option', function () {
         (function () {
             new AuthentiqStrategy(
-                {domain: 'foo', clientID: 'bar', clientSecret: 'baz'},
-                function (accessToken, idToken, profile, done) {
+                {clientID: 'bar', clientSecret: 'baz'},
+                function(iss, sub, profile, done) {
                 }
             );
         }).should.throw('You must provide the callbackURL configuration value to use passport-authentiq.');
     });
 
-    it('should not fail if no scopes are provided as an option', function () {
+    it('should fail if no scopes are provided as an option', function () {
         (function () {
             new AuthentiqStrategy(
-                {domain: 'foo', clientID: 'bar', clientSecret: 'baz'},
-                function (accessToken, idToken, profile, done) {
+                {clientID: 'bar', clientSecret: 'baz', callbackURL: 'test'},
+                function(iss, sub, profile, done) {
                 }
             );
-        }).should.throw('You must provide the callbackURL configuration value to use passport-authentiq.');
+        }).should.throw('You must provide the scope configuration value to use passport-authentiq.');
     });
 });
 
@@ -52,7 +52,8 @@ describe('constructor with right params and no scope should boot OK', function (
         strategy = new AuthentiqStrategy({
                 clientID: 'testid',
                 clientSecret: 'testsecret',
-                callbackURL: '/callback'
+                callbackURL: '/callback',
+                scope: 'aq:name~r aq:location address~r email~rs phone'
             },
             function (accessToken, idToken, profile, done) {
             }
@@ -84,6 +85,6 @@ describe('constructor with right params and no scope should boot OK', function (
     });
 
     it('scope should be properly set', function () {
-        strategy._scope.should.eql(['aq:name', 'email:rs', 'phone:r', 'aq:push']);
+        strategy._scope.should.eql('aq:name~r aq:location address~r email~rs phone');
     });
 });

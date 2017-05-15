@@ -52,7 +52,7 @@ passport.use(new AuthentiqStrategy({
                          clientID: 'Authentiq Client ID',
                          clientSecret: 'Authentiq Client Secret',
                          callbackURL: 'https://www.example.net/auth/authentiq/callback',
-                         scope: ['aq:name', 'email:rs', 'phone:r', 'aq:push']
+                         scope: ['aq:name', 'email~rs', 'phone~r', 'aq:push']
                      },
                      function (iss, sub, profile, done) {
                           User.findOrCreate({ authentiqId: profile.id }, function (err, user) {
