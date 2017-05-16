@@ -7,7 +7,7 @@ This module lets you authenticate without passwords using Authentiq ID in your N
 ## Install
 
 ```bash
-npm install passport-authentiq
+npm install passport passport-authentiq
 ```
 
 ## Usage
@@ -36,12 +36,8 @@ passport.use(new AuthentiqStrategy({
     scope: ['aq:name', 'email~rs', 'phone']
 },
 function (iss, sub, profile, done) {
-    User.findOrCreate({
-        authentiqId: sub,
-        profile: profile
-    }, function (err, user) {
-        return done(err, user);
-    });
+    // Persist or update user locally.
+    return done(err, user);
 }));
 ```
 
@@ -65,26 +61,26 @@ The callback must call `done` to complete the authentication.
 
 #### Authenticate Requests
 
-Use `passport.authenticate()`, specifying the `authentiq` strategy, to
-authenticate requests.
+Use `passport.authenticate()`, specifying the `authentiq` strategy, to authenticate requests.
 
-For example, as route middleware in an [Express](http://expressjs.com/)
-application:
+For example, as route middleware in an [Express](http://expressjs.com/) application:
+
 
 ```javascript
 app.get('/auth/authentiq', passport.authenticate('authentiq'));
 
 app.get('/auth/authentiq/callback',
-    passport.authenticate('authentiq', { failureRedirect: '/' }),
-    function(req, res) {
-        if (!req.user) {
-            throw new Error('Authentication failed');
-        }
-        // Successful authentication, redirect home.
-        res.redirect("/");
-    }
+    passport.authenticate('authentiq', {
+        successRedirect: '/signed-in',
+        failureRedirect: '/error'
+    })
 );
 ```
+
+See [here](http://expressjs.com/en/starter/hello-world.html) for a boilerplate Express application. You will need the following dependencies
+
+    npm install express express-session
+
 
 ## Contributing
 
