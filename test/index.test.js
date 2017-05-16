@@ -16,6 +16,4 @@ describe('passport-authentiq', function(){
         expect(AuthentiqStrategy).to.be.a('function');
         expect(AuthentiqStrategy).to.equal(AuthentiqStrategy.Strategy);
     });
-
-
 });

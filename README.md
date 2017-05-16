@@ -20,7 +20,7 @@ $ npm install passport-authentiq
 #### Create an Application
 
 Before using `passport-authentiq`, you must register an application with Authentiq.
-If you have not already done so, a new application can be created at the 
+If you have not already done so, a new application can be created at the
 [Authentiq Dashboard](https://dashboard.authentiq.com/).
 Your application will be issued a client ID and client
 secret, which need to be provided to the strategy.  You will also need to
@@ -31,7 +31,7 @@ configure a callback URL which matches the route in your application.
 The AuthentiqID authentication strategy authenticates users that use the AuthentiqID mobile application by using
 OpenID Connect, which is an identity layer on top of the OAuth 2.0 protocol.
 
-The _clientID_ and _clientSecret_ are obtained when creating an application on the [Authentiq Dashboard](https://dashboard.authentiq.com) 
+The _clientID_ and _clientSecret_ are obtained when creating an application on the [Authentiq Dashboard](https://dashboard.authentiq.com)
 and need to be supplied as parameters when creating the strategy.
 
 The _callbackURL_ is the URL to which Authentiq will redirect the user after granting authorization.
@@ -45,7 +45,7 @@ The `verify` callback must call `done` providing a user to complete authenticati
 
 
 ```js
-var AuthentiqIDStrategy = require('passport-authentiqid').Strategy;
+var AuthentiqIDStrategy = require('passport-authentiq').Strategy;
 
 
 passport.use(new AuthentiqStrategy({
@@ -67,15 +67,15 @@ passport.use(new AuthentiqStrategy({
 In the above example, additional parameters can be declared in the _done_ callback
 
 Specifically one can use the following, depending on their needs
- 
+
     function (iss, sub, profile, jwtClaims, accessToken, refreshToken, params, done)
-    
+
     function (iss, sub, profile, accessToken, refreshToken, params, done)
 
     function (iss, sub, profile, accessToken, refreshToken, done)
-    
+
     function(iss, sub, profile, done)
-    
+
     function(iss, sub, done)
 
 
