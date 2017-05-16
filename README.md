@@ -1,8 +1,8 @@
 # passport-authentiq
 
-[Passport](http://passportjs.org/) strategy for authenticating with [Authentiq](https://www.authentiq.com/) via [OpenID Connect](http://openid.net/connect/), an identity layer built on top of OAuth 2.0.
+[Passport](http://passportjs.org/) strategy for authenticating with [Authentiq](https://www.authentiq.com/) via [OpenID Connect](http://openid.net/connect/), an identity layer built on top of OAuth 2.0. 
 
-This module lets you authenticate using Authentiq ID in your Node.js applications. By plugging into Passport, Authentiq ID authentication can be easily and unobtrusively integrated into any application or framework that supports [Connect](http://www.senchalabs.org/connect/)-style middleware, including [Express](http://expressjs.com/).
+This module lets you authenticate without passwords using Authentiq ID in your Node.js applications. By plugging into Passport, Authentiq  authentication can be easily and unobtrusively integrated into any application or framework that supports [Connect](http://www.senchalabs.org/connect/)-style middleware, including [Express](http://expressjs.com/).
 
 ## Install
 
@@ -108,4 +108,4 @@ make view-cov
 
 [The MIT License](http://opensource.org/licenses/MIT)
 
-© 2017 [Authentiq.com](https://www.authentiq.com/)
+© 2017 [Authentiq](https://www.authentiq.com/)
