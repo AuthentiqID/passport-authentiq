@@ -7,13 +7,18 @@
     "authentiq",
     "authentiqid",
     "auth",
+    "oauth",
+    "oidc",
+    "mfa",
+    "two-step verification",
+    "two-factor authentication",
     "authentication",
     "identity"
   ],
   "author": {
     "name": "Alex Keramidas",
-    "email": "dev.alexkeramidas@gmail.com",
-    "url": "http://www.authentiq.com/"
+    "email": "alex@authentiq.com",
+    "url": "https://www.authentiq.com/"
   },
   "repository": {
     "type": "git",
