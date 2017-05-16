@@ -38,7 +38,7 @@ describe('constructor with bad params', function () {
         (function () {
             new AuthentiqStrategy(
                 {clientID: 'bar', clientSecret: 'baz', callbackURL: 'test'},
-                function(iss, sub, profile, done) {
+                function (iss, sub, profile, done) {
                 }
             );
         }).should.throw('You must provide the scope configuration value to use passport-authentiq.');
@@ -55,7 +55,7 @@ describe('constructor with right params and no scope should boot OK', function (
                 callbackURL: '/callback',
                 scope: 'aq:name~r aq:location address~r email~rs phone'
             },
-            function (accessToken, idToken, profile, done) {
+            function (iss, sub, profile, done) {
             }
         );
     });
