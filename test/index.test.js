@@ -1,6 +1,6 @@
 var AuthentiqStrategy = require('../lib');
 
-describe('passport-authentiq', function(){
+describe('passport-authentiq', function (){
 
     it('should report a version', function () {
         assert.ok(AuthentiqStrategy.version);
@@ -8,11 +8,11 @@ describe('passport-authentiq', function(){
         assert.ok(AuthentiqStrategy.version.length > 0);
     });
 
-    it('should export Strategy constructor', function() {
+    it('should export Strategy constructor', function () {
         expect(AuthentiqStrategy.Strategy).to.be.a('function');
     });
 
-    it('should export Strategy constructor as module', function() {
+    it('should export Strategy constructor as module', function () {
         expect(AuthentiqStrategy).to.be.a('function');
         expect(AuthentiqStrategy).to.equal(AuthentiqStrategy.Strategy);
     });
