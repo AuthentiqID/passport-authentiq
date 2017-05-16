@@ -1,19 +1,24 @@
 {
   "name": "passport-authentiq",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Authentiq authentication strategy for Passport.",
   "keywords": [
     "passport",
     "authentiq",
     "authentiqid",
     "auth",
+    "oauth",
+    "oidc",
+    "mfa",
+    "two-step verification",
+    "two-factor authentication",
     "authentication",
     "identity"
   ],
   "author": {
     "name": "Alex Keramidas",
-    "email": "dev.alexkeramidas@gmail.com",
-    "url": "http://www.authentiq.com/"
+    "email": "alex@authentiq.com",
+    "url": "https://www.authentiq.com/"
   },
   "repository": {
     "type": "git",
@@ -29,23 +34,22 @@
       "url": "http://opensource.org/licenses/MIT"
     }
   ],
-  "main": "./lib",
+  "main": "lib/index.js",
   "dependencies": {
-    "jsonwebtoken": "^7.4.0",
-    "passport-oauth2": "1.x.x",
-    "xtend": "^4.0.1"
+    "passport-openidconnect": "^0.0.2",
+    "util": "^0.10.3",
+    "xtend": "^4.0.1",
+    "pkginfo": "^0.4.0"
   },
   "devDependencies": {
-    "make-node": "0.3.x",
-    "mocha": "1.x.x",
-    "chai": "2.x.x",
+    "chai": "^3.x.x",
     "chai-passport-strategy": "1.x.x",
-    "proxyquire": "1.4.x"
-  },
-  "engines": {
-    "node": ">= 0.4.0"
+    "should": "^7.1.1",
+    "assert": "^1.4.1",
+    "make-node": "0.3.x",
+    "mocha": "^3.x.x"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha --require test/bootstrap/node test/*.test.js"
+    "test": "node_modules/.bin/mocha --reporter spec --require test/bootstrap/node test/*.test.js test/**/*.test.js"
   }
 }
