@@ -36,7 +36,7 @@
   ],
   "main": "lib/index.js",
   "dependencies": {
-    "passport-openidconnect": "0.0.2",
+    "passport-openidconnect": "^0.0.2",
     "util": "^0.10.3",
     "xtend": "^4.0.1",
     "pkginfo": "^0.4.0"
