@@ -1,73 +1,55 @@
 # passport-authentiq
 
-[Passport](http://passportjs.org/) strategy for authenticating with [AuthentiqID](https://authentiq.com/)
-using the OAuth 2.0 API.
+[Passport](http://passportjs.org/) strategy for authenticating with [Authentiq](https://www.authentiq.com/) via [OpenID Connect](http://openid.net/connect/), an identity layer built on top of OAuth 2.0.
 
-This module lets you authenticate using AuthentiqID in your Node.js applications.
-By plugging into Passport, AuthentiqID authentication can be easily and
-unobtrusively integrated into any application or framework that supports
-[Connect](http://www.senchalabs.org/connect/)-style middleware, including
-[Express](http://expressjs.com/).
+This module lets you authenticate using Authentiq ID in your Node.js applications. By plugging into Passport, Authentiq ID authentication can be easily and unobtrusively integrated into any application or framework that supports [Connect](http://www.senchalabs.org/connect/)-style middleware, including [Express](http://expressjs.com/).
 
 ## Install
 
 ```bash
-$ npm install passport-authentiq
+npm install passport-authentiq
 ```
 
 ## Usage
 
 #### Create an Application
 
-Before using `passport-authentiq`, you must register an application with Authentiq.
-If you have not already done so, a new application can be created at the
-[Authentiq Dashboard](https://dashboard.authentiq.com/).
-Your application will be issued a client ID and client
-secret, which need to be provided to the strategy.  You will also need to
-configure a callback URL which matches the route in your application.
+Before using `passport-authentiq`, you must register an application with Authentiq. If you have not already done so, a new application can be created at the [Authentiq Dashboard](https://dashboard.authentiq.com/).
+
+Your application will be issued a Client ID and Client Secret, that need to be provided to the strategy. You will also need to configure a callback URL which matches the route in your application.
 
 #### Configure Strategy
 
-The AuthentiqID authentication strategy authenticates users that use the AuthentiqID mobile application by using
-OpenID Connect, which is an identity layer on top of the OAuth 2.0 protocol.
+To configure the strategy the `clientID` and `clientSecret` obtained previously need to be supplied as parameters.
 
-The _clientID_ and _clientSecret_ are obtained when creating an application on the [Authentiq Dashboard](https://dashboard.authentiq.com)
-and need to be supplied as parameters when creating the strategy.
+The `callbackURL` is the URL to which Authentiq will redirect the user after granting authorization.
 
-The _callbackURL_ is the URL to which Authentiq will redirect the user after granting authorization.
+The `scope` parameter specifies what identity claims to request from the user. Valid scopes include `aq:name`, `email`, `phone`, `address`, and `aq:location`. The `openid` scope is added automatically. Appending `~rs` to the `email` or `phone` scope to [ensure](https://developers.authentiq.com/#identity-claims) those claims are always _verified_.
 
-The _scope_ parameter is an array of permission scopes to request.  valid scopes include:
-_'aq:name', 'email', 'phone', 'address', 'aq:location', 'aq:push' or none_.
-
-The strategy also requires a `verify` callback, which receives the access token.
-The `verify` callback must call `done` providing a user to complete authentication.
-
-
-
-```js
+```javascript
 var AuthentiqIDStrategy = require('passport-authentiq').Strategy;
 
-
 passport.use(new AuthentiqStrategy({
-                         clientID: 'Authentiq Client ID',
-                         clientSecret: 'Authentiq Client Secret',
-                         callbackURL: 'https://www.example.net/auth/authentiq/callback',
-                         scope: ['aq:name', 'email~rs', 'phone~r', 'aq:push']
-                     },
-                     function (iss, sub, profile, done) {
-                          User.findOrCreate({ authentiqId: profile.id }, function (err, user) {
-                             return done(err, user);
-                          });
-                     }
-              ));
+    clientID: 'Authentiq Client ID',
+    clientSecret: 'Authentiq Client Secret',
+    callbackURL: 'https://website.example/auth/authentiq/callback',
+    scope: ['aq:name', 'email~rs', 'phone']
+},
+function (iss, sub, profile, done) {
+    User.findOrCreate({
+        authentiqId: sub,
+        profile: profile
+    }, function (err, user) {
+        return done(err, user);
+    });
+}));
 ```
 
-#### Callback parameter
+The strategy will call the provided `verify` callback identity information received form the authorization server.
 
-In the above example, additional parameters can be declared in the _done_ callback
+In the above example, the callback accepts `iss`, `sub` and the profile of the user, but there are several other callback signatures available:
 
-Specifically one can use the following, depending on their needs
-
+```javascript
     function (iss, sub, profile, jwtClaims, accessToken, refreshToken, params, done)
 
     function (iss, sub, profile, accessToken, refreshToken, params, done)
@@ -77,25 +59,26 @@ Specifically one can use the following, depending on their needs
     function(iss, sub, profile, done)
 
     function(iss, sub, done)
+```
 
+The callback must call `done` to complete the authentication.
 
 #### Authenticate Requests
 
-Use `passport.authenticate()`, specifying the `'authentiq'` strategy, to
+Use `passport.authenticate()`, specifying the `authentiq` strategy, to
 authenticate requests.
 
 For example, as route middleware in an [Express](http://expressjs.com/)
 application:
 
-```js
-app.get('/auth/authentiq',
- passport.authenticate('authentiq'));
+```javascript
+app.get('/auth/authentiq', passport.authenticate('authentiq'));
 
 app.get('/auth/authentiq/callback',
-    passport.authenticate('authentiq', { failureRedirect: '/login' }),
+    passport.authenticate('authentiq', { failureRedirect: '/' }),
     function(req, res) {
         if (!req.user) {
-            throw new Error('user null');
+            throw new Error('Authentication failed');
         }
         // Successful authentication, redirect home.
         res.redirect("/");
@@ -107,25 +90,22 @@ app.get('/auth/authentiq/callback',
 
 #### Tests
 
-The test suite is located in the `test/` directory.  All new features are
-expected to have corresponding test cases.  Ensure that the complete test suite
-passes by executing:
+The test suite is located in the `test/` directory.  All new features are expected to have corresponding test cases.  Ensure that the complete test suite passes by executing:
 
 ```bash
-$ make test
+make test
 ```
 
 #### Coverage
 
 
 ```bash
-$ make test-cov
-$ make view-cov
+make test-cov
+make view-cov
 ```
 
 ## License
 
 [The MIT License](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2017 Authentiq
-
+© 2017 [Authentiq.com](https://www.authentiq.com/)
