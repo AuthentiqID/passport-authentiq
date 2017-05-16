@@ -27,7 +27,7 @@ The `callbackURL` is the URL to which Authentiq will redirect the user after gra
 The `scope` parameter specifies what identity claims to request from the user. Valid scopes include `aq:name`, `email`, `phone`, `address`, and `aq:location`. The `openid` scope is added automatically. Appending `~rs` to the `email` or `phone` scope to [ensure](https://developers.authentiq.com/#identity-claims) those claims are always _verified_.
 
 ```javascript
-var AuthentiqIDStrategy = require('passport-authentiq').Strategy;
+var AuthentiqStrategy = require('passport-authentiq').Strategy;
 
 passport.use(new AuthentiqStrategy({
     clientID: 'Authentiq Client ID',
